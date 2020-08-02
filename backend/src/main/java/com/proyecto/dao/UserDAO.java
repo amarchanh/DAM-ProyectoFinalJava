@@ -3,11 +3,11 @@ package com.proyecto.dao;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import javax.annotation.Resource;
+import org.springframework.stereotype.Repository;
 
 import com.proyecto.beans.User;
 
-@Resource
+@Repository
 public class UserDAO {
 
 	
@@ -45,7 +45,7 @@ public class UserDAO {
 		boolean rs = false;
 		try {
 			String query = "UPDATE usuarios SET password = '"+user.getPassword() +"' "
-					+ " ultima_modificacion  = current_timestamp where user  = '" + user.getPassword() + "' ";
+					+ " , ultima_modificacion  = current_timestamp where user  = '" + user.getUser() + "' ";
 
 			Statement st = dbConnection.getConnection().createStatement();
 
@@ -58,6 +58,28 @@ public class UserDAO {
 			System.out.println("Error al actualizar el usuario");
 		}
 
+		return rs;
+	}
+	
+	
+	public Boolean createUser(String email, String password) {
+		Boolean rs = false;
+		try {
+			String query = "INSERT INTO usuarios VALUES('', " +email+", " + password +", current_timestamp ";
+
+			Statement st = dbConnection.getConnection().createStatement();
+
+			
+			rs = st.executeUpdate(query) == 1 ? true : false;
+
+		
+			st.close();
+		} catch (Exception e) {
+			System.out.println("Error al actualizar el usuario");
+		}
+		
+		
+		
 		return rs;
 	}
 }
